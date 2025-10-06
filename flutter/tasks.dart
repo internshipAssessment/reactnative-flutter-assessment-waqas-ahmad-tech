@@ -92,6 +92,7 @@ class _ProductListPageState extends State<ProductListPage> {
     }
   }
 
+
   List<Product> get _filtered {
     final q = _query.text.trim().toLowerCase();
     if (q.isEmpty) return _all;
@@ -157,12 +158,10 @@ class Cart {
   final Map<String, int> _qty = {};
 
   void add(Product p) {
-    // TODO(2a): increment quantity for p.id
     _qty[p.id] = (_qty[p.id] ?? 0) + 1;
   }
 
   void remove(Product p) {
-    // TODO(2b): decrement or delete when 0
     if (!_qty.containsKey(p.id)) return;
     final next = (_qty[p.id]! - 1);
     if (next <= 0) {
@@ -173,12 +172,10 @@ class Cart {
   }
 
   int get totalItems {
-    // TODO(2c): sum quantities
     return _qty.values.fold(0, (a, b) => a + b);
   }
 
   int totalPrice(List<Product> products) {
-    // TODO(2d): sum price * qty for items present in products
     final byId = { for (final p in products) p.id: p };
     int cents = 0;
     _qty.forEach((id, q) {
@@ -188,6 +185,7 @@ class Cart {
     return cents;
   }
 }
+
 
 class ProductDetailPage extends StatefulWidget {
   final Product product;
@@ -201,13 +199,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   int _badge = cart.totalItems;
 
   void _add() {
-    // TODO(2e): add to cart, update badge, show SnackBar
-    cart.add(widget.product);
-    setState(() { _badge = cart.totalItems; });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Added • Items in cart: $_badge')),
-    );
-  }
+  cart.add(widget.product);
+  setState(() {
+    _badge = cart.totalItems;
+  });
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text('Added • Items in cart: $_badge')),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
